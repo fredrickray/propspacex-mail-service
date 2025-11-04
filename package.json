@@ -1,0 +1,60 @@
+{
+  "name": "propspacex-mail-service",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
+    "build:only": "tsc && tsc-alias",
+    "build": "npm run clean && npm run build:only",
+    "prestart": "npm run build",
+    "start": "node -r tsconfig-paths/register dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fredrickray/propspacex-mail-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fredrickray/propspacex-mail-service/issues"
+  },
+  "homepage": "https://github.com/fredrickray/propspacex-mail-service#readme",
+  "description": "",
+  "dependencies": {
+    "amqplib": "^0.10.9",
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "handlebars": "^4.7.8",
+    "juice": "^11.0.3",
+    "nodemailer": "^7.0.10",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2",
+    "tsx": "^4.20.6"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.8",
+    "@types/express": "^5.0.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.0",
+    "@types/nodemailer": "^7.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
+    "cross-env": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "jest": "^30.2.0",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.5",
+    "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3"
+  }
+}
