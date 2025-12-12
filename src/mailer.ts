@@ -12,11 +12,7 @@ const compileTemplate = (
   templateName: string,
   placeholders?: Record<string, string>
 ): string => {
-  const filePath = path.join(
-    __dirname,
-    '../../../templates',
-    `${templateName}.html`
-  );
+  const filePath = path.join(__dirname, '../templates', `${templateName}.html`);
   const templateContent = fs.readFileSync(filePath, 'utf-8');
   const template = Handlebars.compile(templateContent);
   let compiledHtml = template(placeholders);

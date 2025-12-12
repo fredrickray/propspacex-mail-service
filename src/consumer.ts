@@ -1,5 +1,5 @@
 import { getChannel } from './queue';
-import { EmailOptions } from './types';
+import { EmailJob, EmailOptions } from './types';
 import sendMail from './mailer';
 import logger from './logger';
 import config from './config';
@@ -15,19 +15,29 @@ export async function startConsumer() {
       if (!msg) return;
 
       try {
-        const job: EmailOptions = JSON.parse(msg.content.toString());
+        const job: EmailJob = JSON.parse(msg.content.toString());
         job.retries = job.retries ?? 0;
 
         logger.info({ job }, 'Processing email job');
 
-        await sendMail(job);
+        // Map EmailJob to EmailOptions
+        const emailOptions: EmailOptions = {
+          id: job.id,
+          to: job.to,
+          subject: job.subject,
+          templateName: job.template || 'generic',
+          placeholders: job.data,
+          retries: job.retries,
+        };
+
+        await sendMail(emailOptions);
 
         ch.ack(msg);
       } catch (err) {
         logger.error({ err }, 'Error processing job');
 
         try {
-          const job: EmailOptions = JSON.parse(msg.content.toString());
+          const job: EmailJob = JSON.parse(msg.content.toString());
           job.retries = (job.retries || 0) + 1;
 
           if (job.retries > config.retryAttempts) {

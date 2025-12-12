@@ -43,10 +43,7 @@ message WelcomeEmailRequest {
 
 message VerificationEmailRequest {
     string recipient_email = 1;
-    string first_name = 2;
-    string verification_code = 3;       // OTP or verification code
-    string verification_link = 4;       // Clickable verification link
-    int32 expiry_minutes = 5;           // How long the code/link is valid
+    string verification_code = 2;       // OTP or verification code (6-digit)
 }
 
 message PasswordResetEmailRequest {

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Your Email</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        background-color: #f4f7fa;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        padding: 40px 20px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 28px;
+        font-weight: 600;
+      }
+      .content {
+        padding: 40px 30px;
+        color: #333333;
+      }
+      .content h2 {
+        margin: 0 0 20px 0;
+        color: #1a1a1a;
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .content p {
+        margin: 0 0 20px 0;
+        line-height: 1.6;
+        color: #555555;
+        font-size: 16px;
+      }
+      .otp-container {
+        text-align: center;
+        margin: 30px 0;
+        padding: 30px;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border-radius: 8px;
+        border: 2px solid #3b82f6;
+      }
+      .otp-label {
+        font-size: 14px;
+        color: #1e40af;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .otp-code {
+        font-size: 42px;
+        font-weight: 700;
+        color: #1e40af;
+        letter-spacing: 8px;
+        margin: 15px 0;
+        font-family: 'Courier New', monospace;
+      }
+      .divider {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #e0e0e0;
+      }
+      .footer {
+        padding: 30px;
+        text-align: center;
+        background-color: #f8f9fa;
+        border-top: 1px solid #e0e0e0;
+      }
+      .footer p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #888888;
+      }
+      .footer a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+      .security-note {
+        background-color: #dbeafe;
+        border-left: 4px solid #3b82f6;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+      .security-note p {
+        margin: 0;
+        font-size: 14px;
+        color: #1e40af;
+      }
+      .warning-box {
+        background-color: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+      .warning-box p {
+        margin: 0;
+        font-size: 14px;
+        color: #92400e;
+      }
+      .info-list {
+        background-color: #f8f9fa;
+        padding: 20px 25px;
+        border-radius: 6px;
+        margin: 20px 0;
+      }
+      .info-list ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #555555;
+        line-height: 1.8;
+      }
+      @media only screen and (max-width: 600px) {
+        .email-container {
+          margin: 20px;
+          border-radius: 6px;
+        }
+        .content {
+          padding: 30px 20px;
+        }
+        .header h1 {
+          font-size: 24px;
+        }
+        .content h2 {
+          font-size: 20px;
+        }
+        .otp-code {
+          font-size: 36px;
+          letter-spacing: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <h1>✉️ Verify Your Email</h1>
+      </div>
+
+      <div class="content">
+        <h2>Welcome aboard!</h2>
+        <p>
+          Thanks for signing up! We're excited to have you get started. To
+          complete your registration, please use the verification code below:
+        </p>
+
+        <div class="otp-container">
+          <div class="otp-label">Your Verification Code</div>
+          <div class="otp-code">{{verificationCode}}</div>
+        </div>
+
+        <div class="security-note">
+          <p>
+            <strong>⏰ This code will expire in 10 minutes</strong> for security
+            reasons.
+          </p>
+        </div>
+
+        <div class="info-list">
+          <p style="margin: 0 0 10px 0; font-weight: 600; color: #333">
+            How to use this code:
+          </p>
+          <ul>
+            <li>Return to the application</li>
+            <li>Enter the 6-digit code above</li>
+            <li>Complete your registration</li>
+          </ul>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="warning-box">
+          <p>
+            <strong>⚠️ Didn't request this code?</strong><br />
+            If you didn't create an account with us, you can safely ignore this
+            email. Someone may have entered your email address by mistake.
+          </p>
+        </div>
+
+        <p><strong>Security Tips:</strong></p>
+        <ul style="color: #555555; line-height: 1.8">
+          <li>Never share this code with anyone</li>
+          <li>Our team will never ask for your verification code</li>
+          <li>If you didn't request this, please disregard this email</li>
+        </ul>
+      </div>
+
+      <div class="footer">
+        <p><strong>PropSpaceX</strong></p>
+        <p>Chevron Drive, Lekki phase 1, Lagos State</p>
+        <p>
+          <a href="https://yourapp.com">Visit our website</a> |
+          <a href="mailto:support@yourapp.com">Contact Support</a>
+        </p>
+        <p style="margin-top: 20px; font-size: 12px">
+          © 2026 PropSpaceX. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

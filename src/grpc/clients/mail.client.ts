@@ -53,10 +53,7 @@ export interface WelcomeEmailParams {
 
 export interface VerificationEmailParams {
   recipientEmail: string;
-  firstName: string;
   verificationCode: string;
-  verificationLink: string;
-  expiryMinutes: number;
 }
 
 export interface PasswordResetEmailParams {
@@ -163,21 +160,6 @@ export class MailServiceClient {
   }
 
   /**
-   * Convert camelCase params to snake_case for proto
-   */
-  private toSnakeCase(obj: Record<string, any>): Record<string, any> {
-    const result: Record<string, any> = {};
-    for (const key in obj) {
-      const snakeKey = key.replace(
-        /[A-Z]/g,
-        (letter) => `_${letter.toLowerCase()}`
-      );
-      result[snakeKey] = obj[key];
-    }
-    return result;
-  }
-
-  /**
    * Promisify gRPC call
    */
   private promisify<T>(
@@ -185,16 +167,14 @@ export class MailServiceClient {
     params: Record<string, any>
   ): Promise<T> {
     return new Promise((resolve, reject) => {
-      this.client[method](
-        this.toSnakeCase(params),
-        (error: any, response: T) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(response);
-          }
+      // keepCase: false in proto-loader handles camelCase <-> snake_case conversion
+      this.client[method](params, (error: any, response: T) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(response);
         }
-      );
+      });
     });
   }
 
