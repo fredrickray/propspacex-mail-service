@@ -46,9 +46,6 @@ export interface SendEmailParams {
 export interface WelcomeEmailParams {
   recipientEmail: string;
   firstName: string;
-  lastName: string;
-  appRole: string;
-  verificationLink?: string;
 }
 
 export interface VerificationEmailParams {
