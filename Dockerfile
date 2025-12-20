@@ -22,6 +22,7 @@ COPY --from=0 /propspacex-mail-service/dist ./dist
 
 ENV NODE_ENV=production
 EXPOSE 9092
+EXPOSE 50052
 
 # CMD ["npm", "start"]
 CMD ["node", "-r", "tsconfig-paths/register", "dist/index.js"]

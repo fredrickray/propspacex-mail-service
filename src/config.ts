@@ -17,7 +17,7 @@ const config = {
   serverEnvironment: process.env.ENV,
   company: process.env.COMPANY_NAME as string,
   // gRPC configuration
-  grpcPort: parseInt(process.env.GRPC_PORT || '50051', 10),
+  grpcPort: parseInt(process.env.GRPC_PORT || '50052', 10),
   grpcHost: process.env.GRPC_HOST || '0.0.0.0',
 };
 
