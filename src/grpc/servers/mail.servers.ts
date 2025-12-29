@@ -4,88 +4,86 @@ import logger from '../../logger';
 import { v4 as uuidv4 } from 'uuid';
 
 // Type definitions for gRPC handlers
+// Note: keepCase: false in proto-loader converts snake_case to camelCase
 type GrpcCallback<T> = (error: grpc.ServiceError | null, response: T) => void;
 
 interface SendEmailRequest {
-  recipient_email: string;
+  recipientEmail: string;
   subject: string;
-  body_html?: string;
-  template_name?: string;
+  bodyHtml?: string;
+  templateName?: string;
   placeholders?: Record<string, string>;
 }
 
 interface WelcomeEmailRequest {
-  recipient_email: string;
-  first_name: string;
-  last_name: string;
-  app_role: string;
-  verification_link?: string;
+  recipientEmail: string;
+  firstName: string;
+  lastName: string;
+  appRole: string;
+  verificationLink?: string;
 }
 
 interface VerificationEmailRequest {
-  recipient_email: string;
-  first_name: string;
-  verification_code: string;
-  verification_link: string;
-  expiry_minutes: number;
+  recipientEmail: string;
+  verificationCode: string;
 }
 
 interface PasswordResetEmailRequest {
-  recipient_email: string;
-  first_name: string;
-  reset_link: string;
-  reset_code?: string;
-  expiry_minutes: number;
+  recipientEmail: string;
+  firstName: string;
+  resetLink: string;
+  resetCode?: string;
+  expiryMinutes: number;
 }
 
 interface PasswordChangedEmailRequest {
-  recipient_email: string;
-  first_name: string;
-  changed_at: string;
-  ip_address: string;
-  device_info: string;
+  recipientEmail: string;
+  firstName: string;
+  changedAt: string;
+  ipAddress: string;
+  deviceInfo: string;
   location: string;
 }
 
 interface LoginAlertEmailRequest {
-  recipient_email: string;
-  first_name: string;
-  login_time: string;
-  ip_address: string;
-  device_info: string;
+  recipientEmail: string;
+  firstName: string;
+  loginTime: string;
+  ipAddress: string;
+  deviceInfo: string;
   location: string;
-  is_new_device: boolean;
+  isNewDevice: boolean;
 }
 
 interface InvitationEmailRequest {
-  recipient_email: string;
-  inviter_name: string;
-  organization_name: string;
+  recipientEmail: string;
+  inviterName: string;
+  organizationName: string;
   role: string;
-  invitation_link: string;
-  expiry_days: number;
+  invitationLink: string;
+  expiryDays: number;
 }
 
 interface NotificationEmailRequest {
-  recipient_email: string;
-  first_name: string;
+  recipientEmail: string;
+  firstName: string;
   subject: string;
   title: string;
   message: string;
-  action_link?: string;
-  action_text?: string;
-  notification_type: string;
+  actionLink?: string;
+  actionText?: string;
+  notificationType: string;
 }
 
 interface BulkEmailRequest {
-  recipient_emails: string[];
+  recipientEmails: string[];
   subject: string;
-  template_name: string;
+  templateName: string;
   placeholders?: Record<string, string>;
 }
 
 interface HealthRequest {
-  service_name: string;
+  serviceName: string;
 }
 
 interface SendEmailResponse {
@@ -97,10 +95,10 @@ interface SendEmailResponse {
 
 interface BulkEmailResponse {
   success: boolean;
-  total_queued: number;
-  total_failed: number;
-  failed_emails: string[];
-  status_message: string;
+  totalQueued: number;
+  totalFailed: number;
+  failedEmails: string[];
+  statusMessage: string;
 }
 
 interface HealthResponse {
@@ -144,17 +142,17 @@ export const sendEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendEmail request received'
     );
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
+      to: request.recipientEmail,
       subject: request.subject,
-      template: request.template_name || 'generic',
+      template: request.templateName || 'generic',
       data: {
-        body_html: request.body_html,
+        bodyHtml: request.bodyHtml,
         ...request.placeholders,
       },
     });
@@ -178,20 +176,20 @@ export const sendWelcomeEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendWelcomeEmail request received'
     );
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
-      subject: `Welcome to PropSpaceX, ${request.first_name}!`,
+      to: request.recipientEmail,
+      subject: `Welcome to PropSpaceX, ${request.firstName}!`,
       template: 'welcome',
       data: {
-        firstName: request.first_name,
-        lastName: request.last_name,
-        appRole: request.app_role,
-        verificationLink: request.verification_link,
+        firstName: request.firstName,
+        lastName: request.lastName,
+        appRole: request.appRole,
+        verificationLink: request.verificationLink,
       },
     });
 
@@ -214,20 +212,17 @@ export const sendVerificationEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendVerificationEmail request received'
     );
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
+      to: request.recipientEmail,
       subject: 'Verify Your Email Address',
       template: 'verification',
       data: {
-        firstName: request.first_name,
-        verificationCode: request.verification_code,
-        verificationLink: request.verification_link,
-        expiryMinutes: request.expiry_minutes,
+        verificationCode: request.verificationCode,
       },
     });
 
@@ -250,20 +245,20 @@ export const sendPasswordResetEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendPasswordResetEmail request received'
     );
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
+      to: request.recipientEmail,
       subject: 'Reset Your Password',
       template: 'password-reset',
       data: {
-        firstName: request.first_name,
-        resetLink: request.reset_link,
-        resetCode: request.reset_code,
-        expiryMinutes: request.expiry_minutes,
+        firstName: request.firstName,
+        resetLink: request.resetLink,
+        resetCode: request.resetCode,
+        expiryMinutes: request.expiryMinutes,
       },
     });
 
@@ -286,20 +281,20 @@ export const sendPasswordChangedEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendPasswordChangedEmail request received'
     );
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
+      to: request.recipientEmail,
       subject: 'Your Password Has Been Changed',
       template: 'password-changed',
       data: {
-        firstName: request.first_name,
-        changedAt: request.changed_at,
-        ipAddress: request.ip_address,
-        deviceInfo: request.device_info,
+        firstName: request.firstName,
+        changedAt: request.changedAt,
+        ipAddress: request.ipAddress,
+        deviceInfo: request.deviceInfo,
         location: request.location,
       },
     });
@@ -323,26 +318,26 @@ export const sendLoginAlertEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendLoginAlertEmail request received'
     );
 
-    const subject = request.is_new_device
+    const subject = request.isNewDevice
       ? 'New Device Login Detected'
       : 'New Login to Your Account';
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
+      to: request.recipientEmail,
       subject,
       template: 'login-alert',
       data: {
-        firstName: request.first_name,
-        loginTime: request.login_time,
-        ipAddress: request.ip_address,
-        deviceInfo: request.device_info,
+        firstName: request.firstName,
+        loginTime: request.loginTime,
+        ipAddress: request.ipAddress,
+        deviceInfo: request.deviceInfo,
         location: request.location,
-        isNewDevice: request.is_new_device,
+        isNewDevice: request.isNewDevice,
       },
     });
 
@@ -365,21 +360,21 @@ export const sendInvitationEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendInvitationEmail request received'
     );
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
-      subject: `You've been invited to join ${request.organization_name}`,
+      to: request.recipientEmail,
+      subject: `You've been invited to join ${request.organizationName}`,
       template: 'invitation',
       data: {
-        inviterName: request.inviter_name,
-        organizationName: request.organization_name,
+        inviterName: request.inviterName,
+        organizationName: request.organizationName,
         role: request.role,
-        invitationLink: request.invitation_link,
-        expiryDays: request.expiry_days,
+        invitationLink: request.invitationLink,
+        expiryDays: request.expiryDays,
       },
     });
 
@@ -402,22 +397,22 @@ export const sendNotificationEmail = async (
 
   try {
     logger.info(
-      { messageId, to: request.recipient_email },
+      { messageId, to: request.recipientEmail },
       'gRPC: SendNotificationEmail request received'
     );
 
     await enqueueEmail({
       id: messageId,
-      to: request.recipient_email,
+      to: request.recipientEmail,
       subject: request.subject,
       template: 'notification',
       data: {
-        firstName: request.first_name,
+        firstName: request.firstName,
         title: request.title,
         message: request.message,
-        actionLink: request.action_link,
-        actionText: request.action_text,
-        notificationType: request.notification_type,
+        actionLink: request.actionLink,
+        actionText: request.actionText,
+        notificationType: request.notificationType,
       },
     });
 
@@ -441,18 +436,18 @@ export const sendBulkEmail = async (
 
   try {
     logger.info(
-      { count: request.recipient_emails.length },
+      { count: request.recipientEmails.length },
       'gRPC: SendBulkEmail request received'
     );
 
-    for (const email of request.recipient_emails) {
+    for (const email of request.recipientEmails) {
       try {
         const messageId = uuidv4();
         await enqueueEmail({
           id: messageId,
           to: email,
           subject: request.subject,
-          template: request.template_name,
+          template: request.templateName,
           data: request.placeholders,
         });
         queuedCount++;
@@ -463,10 +458,10 @@ export const sendBulkEmail = async (
 
     callback(null, {
       success: failedEmails.length === 0,
-      total_queued: queuedCount,
-      total_failed: failedEmails.length,
-      failed_emails: failedEmails,
-      status_message:
+      totalQueued: queuedCount,
+      totalFailed: failedEmails.length,
+      failedEmails: failedEmails,
+      statusMessage:
         failedEmails.length === 0
           ? 'All emails queued successfully'
           : `${queuedCount} queued, ${failedEmails.length} failed`,
@@ -475,10 +470,10 @@ export const sendBulkEmail = async (
     logger.error({ error }, 'gRPC: SendBulkEmail failed');
     callback(null, {
       success: false,
-      total_queued: 0,
-      total_failed: request.recipient_emails.length,
-      failed_emails: request.recipient_emails,
-      status_message: `Error: ${error.message}`,
+      totalQueued: 0,
+      totalFailed: request.recipientEmails.length,
+      failedEmails: request.recipientEmails,
+      statusMessage: `Error: ${error.message}`,
     });
   }
 };
