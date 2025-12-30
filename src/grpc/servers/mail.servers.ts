@@ -32,8 +32,8 @@ interface PasswordResetEmailRequest {
   recipientEmail: string;
   firstName: string;
   resetLink: string;
-  resetCode?: string;
-  expiryMinutes: number;
+  //   resetCode?: string;
+  //   expiryMinutes: number;
 }
 
 interface PasswordChangedEmailRequest {
@@ -257,8 +257,8 @@ export const sendPasswordResetEmail = async (
       data: {
         firstName: request.firstName,
         resetLink: request.resetLink,
-        resetCode: request.resetCode,
-        expiryMinutes: request.expiryMinutes,
+        // resetCode: request.resetCode,
+        // expiryMinutes: request.expiryMinutes,
       },
     });
 
