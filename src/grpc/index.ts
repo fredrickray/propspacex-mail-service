@@ -1,5 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
 import * as protoLoader from '@grpc/proto-loader';
+import { ReflectionService } from '@grpc/reflection';
 import path from 'path';
 import config from '../config';
 import logger from '../logger';
@@ -31,6 +32,8 @@ export const startGrpcServer = (): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
       grpcServer = new grpc.Server();
+      const reflectionService = new ReflectionService(packageDefinition);
+      reflectionService.addToServer(grpcServer);
 
       // Add the MailerService with all handlers
       grpcServer.addService(
