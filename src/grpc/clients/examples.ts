@@ -68,8 +68,8 @@ async function exampleRequestPasswordReset(email: string, firstName: string) {
     recipientEmail: email,
     firstName: firstName,
     resetLink: `https://app.propspacex.com/reset-password?token=${resetToken}`,
-    resetCode: '123456', // Optional OTP
-    expiryMinutes: 30,
+    // resetCode: '123456', // Optional OTP
+    // expiryMinutes: 30,
   });
 
   return response;
@@ -115,10 +115,10 @@ async function exampleSendVerificationEmail(
 
   const response = await mailClient.sendVerificationEmail({
     recipientEmail: email,
-    firstName: firstName,
+    // firstName: firstName,
     verificationCode: verificationCode,
-    verificationLink: `https://app.propspacex.com/verify?code=${verificationCode}`,
-    expiryMinutes: 15,
+    // verificationLink: `https://app.propspacex.com/verify?code=${verificationCode}`,
+    // expiryMinutes: 15,
   });
 
   return response;
