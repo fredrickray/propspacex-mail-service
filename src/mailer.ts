@@ -8,18 +8,35 @@ import logger from './logger';
 import { EmailOptions, EmailJob } from './types';
 import { ServerError } from '@middlewares/error.middleware';
 
+const templatesDir = path.join(__dirname, '../templates');
+const logoPath = path.join(templatesDir, 'logo.jpg');
+
+const registerPartials = (): void => {
+  const partialsDir = path.join(templatesDir, 'partials');
+  if (!fs.existsSync(partialsDir)) return;
+
+  for (const file of fs.readdirSync(partialsDir)) {
+    if (!file.endsWith('.html')) continue;
+    const name = path.basename(file, '.html');
+    Handlebars.registerPartial(
+      name,
+      fs.readFileSync(path.join(partialsDir, file), 'utf-8')
+    );
+  }
+};
+
+registerPartials();
+
 const compileTemplate = (
   templateName: string,
-  placeholders?: Record<string, string>
+  placeholders?: Record<string, any>
 ): string => {
-  const filePath = path.join(__dirname, '../templates', `${templateName}.html`);
+  const filePath = path.join(templatesDir, `${templateName}.html`);
   const templateContent = fs.readFileSync(filePath, 'utf-8');
   const template = Handlebars.compile(templateContent);
-  let compiledHtml = template(placeholders);
+  const compiledHtml = template(placeholders);
 
-  compiledHtml = juice(compiledHtml);
-
-  return compiledHtml;
+  return juice(compiledHtml);
 };
 
 const sendEmail = async (options: EmailOptions): Promise<void> => {
@@ -47,6 +64,15 @@ const sendEmail = async (options: EmailOptions): Promise<void> => {
       to: options.to,
       subject: options.subject,
       html: html,
+      attachments: fs.existsSync(logoPath)
+        ? [
+            {
+              filename: 'logo.jpg',
+              path: logoPath,
+              cid: 'propspacex-logo',
+            },
+          ]
+        : [],
     };
 
     const info = await transporter.sendMail(mailOptions);

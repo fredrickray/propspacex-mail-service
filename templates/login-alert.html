@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New sign-in</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#F4F6FB;">
+    {{> header}}
+        <tr>
+          <td style="padding:12px 32px 8px 32px;font-family:Arial,Helvetica,sans-serif;">
+            <p style="margin:0 0 8px 0;font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#2563FF;">Sign-in alert</p>
+            <h1 style="margin:0 0 12px 0;font-size:24px;line-height:1.3;color:#14275E;">{{#if firstName}}Hi {{firstName}}, there was a new sign-in{{else}}There was a new sign-in{{/if}}</h1>
+            {{#if isNewDevice}}
+            <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;color:#3D4758;">Someone signed in to your PropSpaceX account from a device we have not seen before.</p>
+            {{else}}
+            <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;color:#3D4758;">Someone signed in to your PropSpaceX account. Here are the details we recorded.</p>
+            {{/if}}
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px 0;border:1px solid #E6EAF2;border-radius:10px;">
+              {{#if loginTime}}
+              <tr>
+                <td style="padding:12px 16px;border-bottom:1px solid #E6EAF2;font-size:13px;color:#5B6475;width:120px;">When</td>
+                <td style="padding:12px 16px;border-bottom:1px solid #E6EAF2;font-size:13px;color:#14275E;">{{loginTime}}</td>
+              </tr>
+              {{/if}}
+              {{#if deviceInfo}}
+              <tr>
+                <td style="padding:12px 16px;border-bottom:1px solid #E6EAF2;font-size:13px;color:#5B6475;">Device</td>
+                <td style="padding:12px 16px;border-bottom:1px solid #E6EAF2;font-size:13px;color:#14275E;">{{deviceInfo}}</td>
+              </tr>
+              {{/if}}
+              {{#if location}}
+              <tr>
+                <td style="padding:12px 16px;border-bottom:1px solid #E6EAF2;font-size:13px;color:#5B6475;">Location</td>
+                <td style="padding:12px 16px;border-bottom:1px solid #E6EAF2;font-size:13px;color:#14275E;">{{location}}</td>
+              </tr>
+              {{/if}}
+              {{#if ipAddress}}
+              <tr>
+                <td style="padding:12px 16px;font-size:13px;color:#5B6475;">IP address</td>
+                <td style="padding:12px 16px;font-size:13px;color:#14275E;">{{ipAddress}}</td>
+              </tr>
+              {{/if}}
+            </table>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:#5B6475;">If this was you, you can ignore this email. If it was not, reset your password.</p>
+          </td>
+        </tr>
+    {{> footer}}
+  </body>
+</html>
